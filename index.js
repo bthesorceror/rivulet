@@ -1,16 +1,22 @@
-var EventEmitter = require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter,
+    fs = require('fs');
 
 function Rivulet(path) {
   this.path = path || 'rivulets';
   this.emitter = new EventEmitter();
   this.regex = new RegExp('/' + this.path + '/(.*)');
+  this.static_path = '/' + this.path + '/event-source.js';
 }
 
 Rivulet.prototype.middleware = function() {
   var self = this;
   return function(req, res, next) {
     var match = req.url.match(self.regex)
-    if (match) {
+    if (req.url == self.static_path) {
+      res.writeHead(200, { 'Content-Type': 'text/application' });
+      var file = fs.createReadStream(__dirname + '/static/event-source.js');
+      file.pipe(res);
+    } else if (match) {
       var path = match[1];
       res.writeHead(200, { 'Content-Type': 'text/event-stream' });
       self.emitter.on(path, function(data) {
