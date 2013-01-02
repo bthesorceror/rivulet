@@ -18,7 +18,11 @@ Rivulet.prototype.middleware = function() {
       file.pipe(res);
     } else if (match) {
       var path = match[1];
-      res.writeHead(200, { 'Content-Type': 'text/event-stream' });
+      res.writeHead(200, 
+                    { 'Content-Type': 'text/event-stream' ,
+                      'Cache-Control': 'no-cache',
+                      'Connection': 'keep-alive'
+      });
       self.emitter.on(path, function(data) {
         var json = JSON.stringify(data);
         res.write("data: " + json + "\n\n");
