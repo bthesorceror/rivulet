@@ -18,13 +18,15 @@ Rivulet.prototype.middleware = function() {
       file.pipe(res);
     } else if (match) {
       var path = match[1];
-      res.writeHead(200, 
+      res.writeHead(200,
                     { 'Content-Type': 'text/event-stream' ,
                       'Cache-Control': 'no-cache',
-                      'Connection': 'keep-alive'
-      });
-      self.emitter.on(path, function(data) {
+                      'Connection': 'keep-alive' });
+      self.emitter.on(path, function(data, event_type) {
         var json = JSON.stringify(data);
+        if (event_type) {
+          res.write("event: " + event_type + "\n");
+        }
         res.write("data: " + json + "\n\n");
       });
     } else {
@@ -33,8 +35,8 @@ Rivulet.prototype.middleware = function() {
   }
 }
 
-Rivulet.prototype.send = function(path, data) {
-  this.emitter.emit(path, data);
+Rivulet.prototype.send = function(path, data, event_type) {
+  this.emitter.emit(path, data, event_type);
 }
 
 module.exports = Rivulet;
