@@ -22,12 +22,18 @@ Rivulet.prototype.middleware = function() {
                     { 'Content-Type': 'text/event-stream' ,
                       'Cache-Control': 'no-cache',
                       'Connection': 'keep-alive' });
-      self.emitter.on(path, function(data, event_type) {
+      var listener = function(data, event_type) {
         var json = JSON.stringify(data);
         if (event_type) {
           res.write("event: " + event_type + "\n");
         }
         res.write("data: " + json + "\n\n");
+      };
+
+      self.emitter.on(path, listener);
+
+      req.connection.on('close', function() {
+        self.emitter.removeListener(path, listener);
       });
     } else {
       next();
