@@ -15,8 +15,9 @@ Rivulet.prototype.middleware = function() {
     var match = req.url.match(self.regex)
     if (req.url == self.static_path) {
       res.writeHead(200, { 'Content-Type': 'text/application' });
-      var file = fs.createReadStream(__dirname + '/static/event-source.js');
-      file.pipe(res);
+      fs.
+        createReadStream(__dirname + '/static/event-source.js').
+        pipe(res);
     } else if (match) {
       var path = match[1];
       res.writeHead(200,
