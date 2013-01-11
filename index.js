@@ -1,12 +1,18 @@
 var EventEmitter = require('events').EventEmitter,
     fs = require('fs');
 
-function Rivulet(path, hub) {
+function superProxy(func, context) {
+  return function() {
+    func.apply(context, arguments);
+  }
+}
+
+function Rivulet(hub, path) {
   this.path = path || 'rivulets';
   this.emitter = new EventEmitter();
   this.regex = new RegExp('/' + this.path + '/(.*)');
   this.static_path = '/' + this.path + '/event-source.js';
-  hub && hub.on(this.path, this.send);
+  hub && hub.on(this.path, superProxy(this.send, this));
 }
 
 Rivulet.prototype.middleware = function() {
