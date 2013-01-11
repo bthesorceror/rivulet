@@ -26,10 +26,11 @@ Rivulet.prototype.middleware = function() {
         pipe(res);
     } else if (match) {
       var path = match[1];
+      req.socket.setTimeout(Infinity);
       res.writeHead(200,
-                    { 'Content-Type': 'text/event-stream' ,
+                    { 'Content-Type':  'text/event-stream' ,
                       'Cache-Control': 'no-cache',
-                      'Connection': 'keep-alive' });
+                      'Connection':    'keep-alive' });
       var listener = function(data, event_type) {
         var json = JSON.stringify(data);
         if (event_type) {
