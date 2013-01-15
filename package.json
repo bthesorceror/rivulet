@@ -11,5 +11,9 @@
     "url": "git://github.com/bthesorceror/rivulet.git"
   },
   "author": "Brandon Farmer",
-  "license": "BSD"
+  "license": "BSD",
+  "devDependencies": {
+    "journeyman": "0.0.1",
+    "mocha": "~1.8.1"
+  }
 }
