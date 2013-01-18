@@ -1,6 +1,7 @@
 var EventEmitter = require('events').EventEmitter,
-    fs = require('fs'),
-    helpers = require('./lib/helpers');
+    fs           = require('fs'),
+    path         = require('path'),
+    helpers      = require('./lib/helpers');
 
 var event_stream_header = {
   'Content-Type':  'text/event-stream',
@@ -8,7 +9,7 @@ var event_stream_header = {
   'Connection':    'keep-alive'
 }
 
-var default_polyfill = __dirname + '/static/event-source.js';
+var default_polyfill = path.join(__dirname, '/static/event-source.js');
 
 
 function Rivulet(options) {
