@@ -40,6 +40,9 @@ describe('Rivulet', function() {
         rivulet    = new Rivulet(null, 'rivulets', { polyfill: filePath }),
         middleware = rivulet.middleware();
 
+    mockery.deregisterAll();
+    mockery.disable();
+
     describe('with a polyfill path', function() {
 
       it('should return the polyfile js file', function(done) {
@@ -67,84 +70,66 @@ describe('Rivulet', function() {
     });
 
     describe('with a rivulet path', function() {
+      var path = 'test',
+          data = 'HELLO',
+          event = 'tricky';
 
       it('should pass along the data', function() {
-        var path = 'test',
-            data = 'HELLO',
-            request = createServerRequest('/rivulets/test');
+        var request = createServerRequest('/rivulets/test');
 
         middleware(request.req, request.res, request.next);
         rivulet.send(path, data);
 
-        var expected_val = "data: \"" + data + "\"\n\n";
-
         assert.ok(request.req.socket.setTimeout.calledWith(Infinity));
-        assert.ok(request.res.write.calledWith(expected_val));
+        assert.ok(request.res.write.calledWith("data: \"" + data + "\"\n\n"));
       });
 
       it('should pass along the event', function() {
-        var path = 'test',
-            data = 'HELLO',
-            event = 'tricky',
-            request = createServerRequest('/rivulets/test');
+        var request = createServerRequest('/rivulets/test');
 
         middleware(request.req, request.res, request.next);
         rivulet.send(path, data, event);
 
-        var expected_val = "data: \"" + data + "\"\n\n";
-
         assert.ok(request.req.socket.setTimeout.calledWith(Infinity));
         assert.ok(request.res.write.calledWith("event: " + event + "\n"));
-        assert.ok(request.res.write.calledWith(expected_val));
+        assert.ok(request.res.write.calledWith("data: \"" + data + "\"\n\n"));
       });
 
     });
 
-
-    mockery.deregisterAll();
-    mockery.disable();
   });
 
   describe('Event interface', function() {
     var emitter    = new EventEmitter();
         rivulet    = new Rivulet(emitter, 'streams');
-        middleware = rivulet.middleware();
+        middleware = rivulet.middleware(),
+        path = 'test',
+        data = 'HELLO',
+        event = 'tricky',
 
     it('should pass along the data', function() {
-      var path = 'test',
-          data = 'HELLO',
-          request = createServerRequest('/streams/test');
+      var request = createServerRequest('/streams/test');
 
       middleware(request.req, request.res, request.next);
       emitter.emit('streams', path, data);
 
-      var expected_val = "data: \"" + data + "\"\n\n";
-
       assert.ok(request.req.socket.setTimeout.calledWith(Infinity));
-      assert.ok(request.res.write.calledWith(expected_val));
+      assert.ok(request.res.write.calledWith("data: \"" + data + "\"\n\n"));
     });
 
     it('should pass along the event', function() {
-      var path = 'test',
-          data = 'HELLO',
-          event = 'tricky',
-          request = createServerRequest('/streams/test');
+      var request = createServerRequest('/streams/test');
 
       middleware(request.req, request.res, request.next);
       emitter.emit('streams', path, data, event);
 
-      var expected_val = "data: \"" + data + "\"\n\n";
-
       assert.ok(request.req.socket.setTimeout.calledWith(Infinity));
       assert.ok(request.res.write.calledWith("event: " + event + "\n"));
-      assert.ok(request.res.write.calledWith(expected_val));
+      assert.ok(request.res.write.calledWith("data: \"" + data + "\"\n\n"));
     });
 
     it('should remove the listener on disconnect', function() {
-      var path = 'test',
-          data = 'HELLO',
-          event = 'tricky',
-          request = createServerRequest('/streams/test');
+      var request = createServerRequest('/streams/test');
 
       middleware(request.req, request.res, request.next);
       request.req.connection.emit('close');
