@@ -32,7 +32,7 @@ describe('Rivulet', function() {
       createReadStream: sinon.stub().returns(streamMock)
     }
 
-    mockery.enable({ useCleanCache: true });
+    mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     mockery.registerMock('fs', fsMock);
 
     var Rivulet    = require('../rivulet'),
