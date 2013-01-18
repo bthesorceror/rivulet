@@ -72,4 +72,6 @@ emitter.emit('rivulets', 'test', 'HELLO WORLD');
 
 ```
 
+Thanks to Yaffle for the event source polyfill which can be found [here](https://github.com/Yaffle/EventSource)
+
 [journeyman]: https://github.com/bthesorceror/journeyman
