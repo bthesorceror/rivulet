@@ -1,6 +1,8 @@
 rivulet
 =======
 
+[![Build Status](https://travis-ci.org/bthesorceror/rivulet.png?branch=master)](undefined)
+
 Middleware for [journeyman][] to simplify server sent events
 
 Client Side:
