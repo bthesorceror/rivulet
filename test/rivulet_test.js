@@ -50,13 +50,12 @@ describe('Rivulet', function() {
 
     describe('with a polyfill path', function() {
 
-      it('should return the polyfile js file', function(done) {
+      it('should return the polyfile js file', function() {
         response = createServerRequest('/rivulets/event-source.js');
         middleware(response.req, response.res, response.next);
         assert.ok(response.res.writeHead.calledWith(200, { 'Content-Type': 'application/javascript' }));
         assert.ok(fsMock.createReadStream.calledWith(filePath));
         assert.ok(streamMock.pipe.calledWith(response.res));
-        done();
       });
 
     });
