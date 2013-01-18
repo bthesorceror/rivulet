@@ -1,42 +1,30 @@
 var EventEmitter = require('events').EventEmitter,
-    fs = require('fs');
+    fs = require('fs'),
+    helpers = require('./lib/helpers');
 
 var event_stream_header = {
-                            'Content-Type':  'text/event-stream',
-                            'Cache-Control': 'no-cache',
-                            'Connection':    'keep-alive'
-                          }
+  'Content-Type':  'text/event-stream',
+  'Cache-Control': 'no-cache',
+  'Connection':    'keep-alive'
+}
 
 var default_polyfill = __dirname + '/static/event-source.js';
 
-function superProxyMe(func, context) {
-  return function() {
-    func.apply(context, arguments);
-  }
-}
 
-function generateListener(res) {
-  return function(data, event_type) {
-    var json = JSON.stringify(data);
-    if (event_type) {
-      res.write("event: " + event_type + "\n");
-    }
-    res.write("data: " + json + "\n\n");
-  };
-}
-
-function Rivulet(hub, path, options) {
+function Rivulet(options) {
   options = options || {};
-  this.path        = path || 'rivulets';
+  this.path        = options['path'] || 'rivulets';
   this.emitter     = new EventEmitter();
   this.regex       = new RegExp('/' + this.path + '/(.*)');
   this.static_path = '/' + this.path + '/event-source.js';
   this.polyfill    = options['polyfill'] || default_polyfill;
-  hub && hub.on(this.path, superProxyMe(this.send, this));
+  this.hub         = options['hub'] || null;
+  this.hub && this.hub.on(this.path, helpers.superProxyMe(this.send, this));
 }
 
 Rivulet.prototype.middleware = function() {
   var self = this;
+
   return function(req, res, next) {
     var match = req.url.match(self.regex);
     if (req.url == self.static_path) {
@@ -44,7 +32,7 @@ Rivulet.prototype.middleware = function() {
       fs.createReadStream(self.polyfill).pipe(res);
     } else if (match) {
       var path     = match[1],
-          listener = generateListener(res);
+          listener = helpers.generateListener(res);
 
       req.socket.setTimeout(Infinity);
       res.writeHead(200, event_stream_header);

@@ -37,7 +37,12 @@ describe('Rivulet', function() {
 
     var Rivulet    = require('../rivulet'),
         filePath   = 'here I am',
-        rivulet    = new Rivulet(null, 'rivulets', { polyfill: filePath }),
+        setup      = {
+          hub: null,
+          path: 'rivulets',
+          polyfill: filePath
+        },
+        rivulet    = new Rivulet(setup),
         middleware = rivulet.middleware();
 
     mockery.deregisterAll();
@@ -100,12 +105,16 @@ describe('Rivulet', function() {
   });
 
   describe('Event interface', function() {
-    var emitter    = new EventEmitter();
-        rivulet    = new Rivulet(emitter, 'streams');
+    var emitter    = new EventEmitter(),
+        setup      = {
+          hub: emitter,
+          path: 'streams'
+        },
+        rivulet    = new Rivulet(setup),
         middleware = rivulet.middleware(),
         path = 'test',
         data = 'HELLO',
-        event = 'tricky',
+        event = 'tricky';
 
     it('should pass along the data', function() {
       var request = createServerRequest('/streams/test');
