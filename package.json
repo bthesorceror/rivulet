@@ -2,7 +2,7 @@
   "name": "rivulet",
   "version": "0.0.0",
   "description": "middleware for journeyman to simplify server sent events",
-  "main": "index.js",
+  "main": "rivulet.js",
   "scripts": {
     "test": "mocha"
   },
