@@ -1,4 +1,4 @@
-var Rivulet        = require('../index'),
+var Rivulet        = require('../rivulet'),
     assert         = require('assert'),
     sinon          = require('sinon'),
     mockery        = require('mockery'),
@@ -35,7 +35,7 @@ describe('Rivulet', function() {
     mockery.enable({ useCleanCache: true });
     mockery.registerMock('fs', fsMock);
 
-    var Rivulet    = require('../index'),
+    var Rivulet    = require('../rivulet'),
         filePath   = 'here I am',
         rivulet    = new Rivulet(null, 'rivulets', { polyfill: filePath }),
         middleware = rivulet.middleware();
