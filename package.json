@@ -15,7 +15,6 @@
   "devDependencies": {
     "journeyman": "0.0.1",
     "mocha": "~1.8.1",
-    "mocks": "0.0.10",
     "mockery": "~1.4.0",
     "sinon": "~1.5.2"
   },
