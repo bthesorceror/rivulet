@@ -7,6 +7,8 @@ var event_stream_header = {
                             'Connection':    'keep-alive'
                           }
 
+var default_polyfill = __dirname + '/static/event-source.js';
+
 function superProxyMe(func, context) {
   return function() {
     func.apply(context, arguments);
@@ -29,7 +31,7 @@ function Rivulet(hub, path, options) {
   this.emitter     = new EventEmitter();
   this.regex       = new RegExp('/' + this.path + '/(.*)');
   this.static_path = '/' + this.path + '/event-source.js';
-  this.polyfill    = options['polyfill'] || __dirname + '/static/event-source.js';
+  this.polyfill    = options['polyfill'] || default_polyfill;
   hub && hub.on(this.path, superProxyMe(this.send, this));
 }
 
