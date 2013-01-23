@@ -18,5 +18,7 @@
     "mockery": "~1.4.0",
     "sinon": "~1.5.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "hashish": "0.0.4"
+  }
 }
