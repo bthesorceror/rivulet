@@ -48,6 +48,11 @@ describe('Rivulet', function() {
     mockery.deregisterAll();
     mockery.disable();
 
+    it('has a defaults to rivulets for path', function() {
+      var new_rivulet = new Rivulet();
+      assert.equal(new_rivulet.path, 'rivulets');
+    });
+
     describe('with a polyfill path', function() {
 
       it('should return the polyfile js file', function() {

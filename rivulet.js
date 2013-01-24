@@ -17,7 +17,7 @@ var default_options = {
 
 
 function Rivulet(options) {
-  options = hash.merge(default_options, options);
+  options = hash.merge(default_options, options || {});
   this.path        = options['path'];
   this.emitter     = new EventEmitter();
   this.regex       = new RegExp('/' + this.path + '/(.*)');
