@@ -6,7 +6,7 @@ rivulet
 Middleware for [journeyman][] to simplify server sent events
 
 Client Side:
-====================================
+------------------------------------
 
 ```html
 
@@ -32,22 +32,16 @@ Client Side:
 
 ```
 
-ServerSide:
-===========================================
+Server Side:
+-------------------------------------------
 
 ```javascript
 
 var Rivulet      = require('rivulet');
 var Journeyman   = require('journeyman');
-var EventEmitter = require('events').EventEmitter;
 
 var journeyman = new Journeyman(3000);
-var emitter    = new EventEmitter();
-var options    = {
-  hub: emitter
-};
-
-var rivulet = new Rivulet(options);
+var rivulet = new Rivulet();
 
 journeyman.use(function(req, res, next) {
   // render html page
@@ -62,7 +56,7 @@ To show an alert of "Alert: HELLO WORLD"
 
 ```javascript
 
-emitter.emit('rivulets', 'test', 'HELLO WORLD', 'alert');
+emitter.send('test', 'HELLO WORLD', 'alert');
 
 ```
 
@@ -70,7 +64,7 @@ To show an alert of "Message: HELLO WORLD"
 
 ```javascript
 
-emitter.emit('rivulets', 'test', 'HELLO WORLD');
+emitter.send('test', 'HELLO WORLD');
 
 ```
 
