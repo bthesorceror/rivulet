@@ -15,7 +15,6 @@ var default_options = {
   polyfill: path.join(__dirname, '/static/event-source.js'),
 }
 
-
 function Rivulet(options) {
   options = hash.merge(default_options, options || {});
   this.path        = options['path'];
