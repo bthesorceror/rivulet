@@ -56,7 +56,7 @@ To show an alert of "Alert: HELLO WORLD"
 
 ```javascript
 
-emitter.send('test', 'HELLO WORLD', 'alert');
+rivulet.send('test', 'HELLO WORLD', 'alert');
 
 ```
 
@@ -64,7 +64,7 @@ To show an alert of "Message: HELLO WORLD"
 
 ```javascript
 
-emitter.send('test', 'HELLO WORLD');
+rivulet.send('test', 'HELLO WORLD');
 
 ```
 
