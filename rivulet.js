@@ -24,26 +24,33 @@ function Rivulet(options) {
   this.polyfill    = options['polyfill'];
 }
 
+Rivulet.prototype.renderStatic = function(res) {
+  res.writeHead(200, { 'Content-Type': 'application/javascript' });
+  fs.createReadStream(this.polyfill).pipe(res);
+}
+
+Rivulet.prototype.setupConnection = function(req, res, path) {
+  var listener = helpers.generateListener(res);
+
+  req.socket.setTimeout(Infinity);
+  res.writeHead(200, event_stream_header);
+
+  this.emitter.on(path, listener);
+
+  req.connection.on('close', function() {
+    this.emitter.removeListener(path, listener);
+  });
+}
+
 Rivulet.prototype.middleware = function() {
   var self = this;
 
   return function(req, res, next) {
     var match = req.url.match(self.regex);
     if (req.url == self.static_path) {
-      res.writeHead(200, { 'Content-Type': 'application/javascript' });
-      fs.createReadStream(self.polyfill).pipe(res);
+      self.renderStatic(res);
     } else if (match) {
-      var path     = match[1],
-          listener = helpers.generateListener(res);
-
-      req.socket.setTimeout(Infinity);
-      res.writeHead(200, event_stream_header);
-
-      self.emitter.on(path, listener);
-
-      req.connection.on('close', function() {
-        self.emitter.removeListener(path, listener);
-      });
+      self.setupConnection(req, res, match[1]);
     } else {
       next();
     }
