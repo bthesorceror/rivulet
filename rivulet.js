@@ -1,8 +1,7 @@
 var EventEmitter = require('events').EventEmitter,
     fs           = require('fs'),
     path         = require('path'),
-    hash         = require('hashish'),
-    helpers      = require('./lib/helpers');
+    hash         = require('hashish');
 
 var event_stream_header = {
   'Content-Type':  'text/event-stream',
@@ -29,8 +28,16 @@ Rivulet.prototype.renderStatic = function(res) {
   fs.createReadStream(this.polyfill).pipe(res);
 }
 
+Rivulet.prototype.generateListener = function(res) {
+  return function(data, event_type) {
+    if (event_type)
+      res.write("event: " + event_type + "\n");
+    res.write("data: " + data + "\n\n");
+  };
+}
+
 Rivulet.prototype.setupConnection = function(req, res, path) {
-  var listener = helpers.generateListener(res);
+  var listener = this.generateListener(res);
 
   req.socket.setTimeout(Infinity);
   res.writeHead(200, event_stream_header);
@@ -39,26 +46,25 @@ Rivulet.prototype.setupConnection = function(req, res, path) {
 
   req.connection.on('close', function() {
     this.emitter.removeListener(path, listener);
-  });
+  }.bind(this));
 }
 
 Rivulet.prototype.middleware = function() {
-  var self = this;
 
   return function(req, res, next) {
-    var match = req.url.match(self.regex);
-    if (req.url == self.static_path) {
-      self.renderStatic(res);
+    var match = req.url.match(this.regex);
+    if (req.url == this.static_path) {
+      this.renderStatic(res);
     } else if (match) {
-      self.setupConnection(req, res, match[1]);
+      this.setupConnection(req, res, match[1]);
     } else {
       next();
     }
-  }
+  }.bind(this);
 }
 
 Rivulet.prototype.send = function(path, data, event_type) {
-  this.emitter.emit(path, data, event_type);
+  this.emitter.emit(path, JSON.stringify(data), event_type);
 }
 
 module.exports = Rivulet;
