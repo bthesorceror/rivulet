@@ -17,11 +17,11 @@ Client Side:
         var eventsource = new EventSource('/rivulets/test');
 
         eventsource.addEventListener('alert', function(message) {
-          alert("Alert: " + message);
+          alert("Alert: " + message.data);
         });
 
         eventsource.addEventListener('message', function(message) {
-          alert("Message: " + message);
+          alert("Message: " + message.data);
         });
       </script>
     </head>
