@@ -1,6 +1,6 @@
 {
   "name": "rivulet",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "middleware for journeyman to simplify server sent events",
   "main": "rivulet.js",
   "scripts": {
