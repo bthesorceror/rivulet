@@ -6,7 +6,10 @@ var EventEmitter = require('events').EventEmitter,
 var event_stream_header = {
   'Content-Type':  'text/event-stream',
   'Cache-Control': 'no-cache',
-  'Connection':    'keep-alive'
+  'Connection':    'keep-alive',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+  'Access-Control-Allow-Headers': 'Content-Type'
 }
 
 var default_options = {
