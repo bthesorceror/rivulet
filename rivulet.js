@@ -24,6 +24,7 @@ function Rivulet(options) {
   this.regex       = new RegExp('/' + this.path + '/(.*)');
   this.static_path = '/' + this.path + '/event-source.js';
   this.polyfill    = options['polyfill'];
+  this.emitter.setMaxListeners(0);
 }
 
 Rivulet.prototype.renderStatic = function(res) {
