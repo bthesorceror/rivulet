@@ -40,10 +40,11 @@ Rivulet.prototype.generateListener = function(res) {
 }
 
 Rivulet.prototype.setupConnection = function(req, res, path) {
-  var listener = this.generateListener(res);
-
-  req.socket.setTimeout(Infinity);
+  req.socket.setTimeout(0);
   res.writeHead(200, event_stream_header);
+  res.write('\n');
+
+  var listener = this.generateListener(res);
 
   this.emitter.on(path, listener);
 

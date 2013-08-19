@@ -89,7 +89,8 @@ describe('Rivulet', function() {
         middleware(request.req, request.res, request.next);
         rivulet.send(path, data);
 
-        assert.ok(request.req.socket.setTimeout.calledWith(Infinity));
+        assert.ok(request.req.socket.setTimeout.calledWith(0));
+        assert.ok(request.res.write.calledWith("\n"));
         assert.ok(request.res.write.calledWith("data: \"" + data + "\"\n\n"));
       });
 
@@ -99,7 +100,8 @@ describe('Rivulet', function() {
         middleware(request.req, request.res, request.next);
         rivulet.send(path, data, event);
 
-        assert.ok(request.req.socket.setTimeout.calledWith(Infinity));
+        assert.ok(request.req.socket.setTimeout.calledWith(0));
+        assert.ok(request.res.write.calledWith("\n"));
         assert.ok(request.res.write.calledWith("event: " + event + "\n"));
         assert.ok(request.res.write.calledWith("data: \"" + data + "\"\n\n"));
       });
