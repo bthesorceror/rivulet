@@ -14,7 +14,7 @@ var event_stream_header = {
 
 var default_options = {
   path: 'rivulets',
-  polyfill: path.join(__dirname, '/static/event-source.js'),
+  polyfill: path.join(__dirname, 'static', 'event-source.js'),
 }
 
 function Rivulet(options) {
