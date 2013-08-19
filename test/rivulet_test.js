@@ -97,7 +97,8 @@ describe('Rivulet', function() {
       it('emits an event on connection', function(done) {
         var request = createServerRequest('/rivulets/test');
 
-        rivulet.once('connection', function(req, res) {
+        rivulet.once('connection', function(path, req, res) {
+          assert.equal(path, 'test');
           assert.deepEqual(req, request.req);
           assert.deepEqual(res, request.res);
           done();
@@ -109,7 +110,8 @@ describe('Rivulet', function() {
       it('emits an event on disconnection', function(done) {
         var request = createServerRequest('/rivulets/test');
 
-        rivulet.once('disconnect', function(req, res) {
+        rivulet.once('disconnect', function(path, req, res) {
+          assert.equal(path, 'test');
           assert.deepEqual(req, request.req);
           assert.deepEqual(res, request.res);
           done();

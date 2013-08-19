@@ -47,7 +47,7 @@ Rivulet.prototype.setupConnection = function(req, res, path) {
   res.writeHead(200, event_stream_header);
   res.write('\n');
 
-  this.emit('connection', req, res);
+  this.emit('connection', path, req, res);
 
   var listener = this.generateListener(res);
 
@@ -55,7 +55,7 @@ Rivulet.prototype.setupConnection = function(req, res, path) {
 
   req.connection.on('close', function() {
     this.emitter.removeListener(path, listener);
-    this.emit('disconnect', req, res);
+    this.emit('disconnect', path, req, res);
   }.bind(this));
 }
 
