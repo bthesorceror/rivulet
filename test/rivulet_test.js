@@ -94,6 +94,31 @@ describe('Rivulet', function() {
         assert.ok(request.res.write.calledWith("data: \"" + data + "\"\n\n"));
       });
 
+      it('emits an event on connection', function(done) {
+        var request = createServerRequest('/rivulets/test');
+
+        rivulet.once('connection', function(req, res) {
+          assert.deepEqual(req, request.req);
+          assert.deepEqual(res, request.res);
+          done();
+        });
+
+        middleware(request.req, request.res, request.next);
+      });
+
+      it('emits an event on disconnection', function(done) {
+        var request = createServerRequest('/rivulets/test');
+
+        rivulet.once('disconnect', function(req, res) {
+          assert.deepEqual(req, request.req);
+          assert.deepEqual(res, request.res);
+          done();
+        });
+
+        middleware(request.req, request.res, request.next);
+        request.req.connection.emit('close');
+      });
+
       it('should pass along the event', function() {
         var request = createServerRequest('/rivulets/test');
 

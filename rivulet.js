@@ -27,6 +27,8 @@ function Rivulet(options) {
   this.emitter.setMaxListeners(0);
 }
 
+(require('util')).inherits(Rivulet, EventEmitter);
+
 Rivulet.prototype.renderStatic = function(res) {
   res.writeHead(200, { 'Content-Type': 'application/javascript' });
   fs.createReadStream(this.polyfill).pipe(res);
@@ -45,12 +47,15 @@ Rivulet.prototype.setupConnection = function(req, res, path) {
   res.writeHead(200, event_stream_header);
   res.write('\n');
 
+  this.emit('connection', req, res);
+
   var listener = this.generateListener(res);
 
   this.emitter.on(path, listener);
 
   req.connection.on('close', function() {
     this.emitter.removeListener(path, listener);
+    this.emit('disconnect', req, res);
   }.bind(this));
 }
 
