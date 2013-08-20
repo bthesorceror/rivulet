@@ -68,6 +68,30 @@ rivulet.send('test', 'HELLO WORLD');
 
 ```
 
+Events:
+----------
+
+Listening for a new connection
+==============================
+
+```javascript
+rivulet.on('connection', function(path, request, response) {
+// Do something cool!
+});
+```
+
+Listening for a disconnection
+==============================
+
+```javascript
+rivulet.on('disconnection', function(path, request, response) {
+// Do something cool!
+});
+```
+
+Thanks
+------
+
 Thanks to Yaffle for the event source polyfill which can be found [here](https://github.com/Yaffle/EventSource)
 
 [journeyman]: https://github.com/bthesorceror/journeyman
