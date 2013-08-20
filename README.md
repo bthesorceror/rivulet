@@ -1,12 +1,10 @@
-rivulet
-=======
+# rivulet
 
 [![Build Status](https://travis-ci.org/bthesorceror/rivulet.png?branch=master)](undefined)
 
 Middleware for [journeyman][] to simplify server sent events
 
-Client Side:
-------------------------------------
+## Client Side:
 
 ```html
 
@@ -32,8 +30,7 @@ Client Side:
 
 ```
 
-Server Side:
--------------------------------------------
+## Server Side:
 
 ```javascript
 
@@ -68,11 +65,9 @@ rivulet.send('test', 'HELLO WORLD');
 
 ```
 
-Events:
-----------
+## Events:
 
-Listening for a new connection
-==============================
+### Listening for a new connection
 
 ```javascript
 rivulet.on('connection', function(path, request, response) {
@@ -80,8 +75,7 @@ rivulet.on('connection', function(path, request, response) {
 });
 ```
 
-Listening for a disconnection
-==============================
+### Listening for a disconnection
 
 ```javascript
 rivulet.on('disconnection', function(path, request, response) {
@@ -89,8 +83,7 @@ rivulet.on('disconnection', function(path, request, response) {
 });
 ```
 
-Thanks
-------
+## Thanks
 
 Thanks to Yaffle for the event source polyfill which can be found [here](https://github.com/Yaffle/EventSource)
 
