@@ -9,7 +9,8 @@ var event_stream_header = {
   'Connection':    'keep-alive',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-  'Access-Control-Allow-Headers': 'Content-Type'
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Transfer-Encoding': 'identity'
 }
 
 var default_options = {
